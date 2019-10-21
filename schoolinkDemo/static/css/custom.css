@@ -1,0 +1,6 @@
+.custom .table > tbody > tr > th {
+     vertical-align: middle;
+}
+.custom .table > tbody > tr > td {
+     vertical-align: middle;
+}
