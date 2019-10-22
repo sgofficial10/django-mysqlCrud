@@ -18,6 +18,7 @@ from django.urls import path, include
 
 urlpatterns = [
     # path('schoolinkDemo/login/', include('login.urls')),
+    path('user/', include('user.urls')),
     path('login/', include('login.urls')),
     path('admin/', admin.site.urls),
     
