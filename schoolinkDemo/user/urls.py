@@ -4,5 +4,8 @@ from . import views
 
 
 urlpatterns = [
-    path('dashboard/', views.dashboard),
+    path('viewClass/<int:class_id>', views.viewClass),
+    path('dashboard', views.dashboard),
+    path('createClass', views.createClass),
+    path('classList', views.listClass)
 ]

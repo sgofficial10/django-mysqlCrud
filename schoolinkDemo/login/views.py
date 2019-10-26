@@ -38,7 +38,7 @@ def index(request):
                                 request.session['userType'] = userType
                                 request.session['userId'] = getUserDetail.get('id')
                                 request.session['fname'] = getUserDetail.get('fname')
-                                return redirect('http://localhost:8000/user/dashboard/')
+                                return redirect('http://localhost:8000/user/dashboard')
                                 # return render(request, 'test.html', {'hashedPassword' : request.session['fname']})
                             else:
                                return render(request, 'login.html', {'error': 'User is not active.Please contact to admin.'}) 
