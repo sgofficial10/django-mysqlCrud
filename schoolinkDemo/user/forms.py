@@ -1,27 +1,33 @@
 from django.forms import ModelForm 
 from django import forms 
-from user.models import *
+from .models import Classes
+from django.core.exceptions import ValidationError
 
 
-class ClassesForm(forms.ModelForm):
-    class Meta:
-        model = Classes
-        fields = ["code", "className"]
-    # this function will be used for the validation
-    def clean(self):
-        # data from the form is fetched using super function 
-        super(ClassesForm, self).clean()
+# class ClassFormModel(forms.ModelForm):
+#     class Meta:
+#         model = Classes
+#         fields = ['code', 'className']
+        
 
-        # extract the username and text field from the data 
-        classCode = self.cleaned_data.get('code') 
-        className = self.cleaned_data.get('className')
-        # conditions to be met for the username length 
-        if len(classCode) < 5: 
-            self._errors['classCode'] = self.error_class([ 
-                'Minimum 5 characters required']) 
-        if len(className) <10: 
-            self._errors['className'] = self.error_class([ 
-                'Post Should Contain minimum 10 characters']) 
-        # return any errors if found 
-        return self.cleaned_data 
+
+class ClassForm(forms.Form):
+    code = forms.CharField(max_length=10)
+    name = forms.CharField(max_length=10)
+    # email = forms.EmailField()
+    # content = forms.CharField(widget=forms.Textarea)
+
+    def clean_code(self):
+        code = self.cleaned_data['code'].strip()
+        if code is None:
+            raise ValidationError('Class code is required.')
+        else:
+            class_code_exists = Classes.objects.filter(code=code).values()
+            if class_code_exists.exists():
+                raise ValidationError('Class code already exists.')
+
+    def clean_name(self):
+        name = self.cleaned_data['name'].strip()
+        if name is None:
+           raise ValidationError('class name is required.') 
 
