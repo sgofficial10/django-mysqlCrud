@@ -191,7 +191,7 @@ padding: 0;
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="<?php echo base_url('Logout');?>">
+                                                <a href="{{ '/user/logout' }}">
                                                     <i class="fa fa-power-off">
                                                     </i>Logout
                                                 </a>
@@ -199,7 +199,7 @@ padding: 0;
                                         </ul>
                                     </li>
                                         <li class="hidden-xxs">
-                                            <a class="btn" href="<?php echo base_url('Logout');?>" title="Logout">
+                                            <a class="btn" href="{{ '/user/logout' }}" title="Logout">
                                                 <i class="fa fa-power-off">
                                                 </i>
                                             </a>
@@ -315,6 +315,7 @@ padding: 0;
       var input = document.getElementById('pac-input1');
       var autocomplete = new google.maps.places.Autocomplete(input);
     </script>
+    {% block javascript %}{% endblock %}
 </body>
 </html>
 <script>$(document).ready(function(){$('#notification_read_trigger').click(function(){});});

@@ -17,12 +17,18 @@
 						</div>
 					</div>
 					<div class="row">
+						{% if error %}
+							<div class="alert alert-warning">
+								<i class="fa fa-check-circle fa-fw fa-lg"></i>
+								<strong>{{ error }}</strong>
+							</div>
+						{% endif %}
 						<div class="col-lg-12">
 							<div class="main-box">
 								<header class="main-box-header clearfix">
 								</header>
 								<div class="main-box-body clearfix">
-									<form   action ="{{'/user/updateClass'}}"  method="post" >
+									<form   action =""  method="post" >
 										{% csrf_token %}
 										<div class="form-group">
 											<input type="text" name="code"  placeholder = "Enter Code"  disabled = "disabled" class = 'form-control' value="{{ classDetail.code|default:'N/A' }}" >

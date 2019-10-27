@@ -3,15 +3,24 @@ from user.utils.sessionChecker import sessionCheck
 from .forms import * 
 from user.models import *
 from django.core.paginator import Paginator
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from .forms import  ClassForm
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.views.decorators.csrf import csrf_exempt
+#csrf_exempt is help to get POST data without csrf_token. It is a decorator @csrf_exempt
 
 @sessionCheck
 def dashboard(request):
-    return render(request, 'test1.html', {'hashedPassword' : request.session['fname']})
+    return render(request, 'dashboard.html')
 
 
+
+@sessionCheck
+def logout(request):
+    del request.session['userType']
+    del request.session['userId']
+    del request.session['fname']
+    return redirect('http://localhost:8000/login')
 
 @sessionCheck
 def createClass(request):
@@ -57,22 +66,78 @@ def listClass(request):
 @sessionCheck
 def viewClass(request, class_id):
     try:
-        classDetails = Classes.objects.filter(pk=class_id, isDelete='0').values()
-        if(classDetails.exists()):
-            for classDetail in classDetails:
-                classDetail = classDetail
-            return render(request, 'viewClass.html', {'classDetail' : classDetail})
+        if class_id is not None:
+            classDetails = Classes.objects.filter(pk=class_id, isDelete='0').values()
+            if(classDetails.exists()):
+                for classDetail in classDetails:
+                    classDetail = classDetail
+                if request.method == 'POST':
+                    if(request.POST.get('csrfmiddlewaretoken')) is not None:
+                        classname_exists = Classes.objects.filter(className=request.POST.get('name').strip()).exclude(pk=request.POST.get('classes_id')).values()
+                        if classname_exists.exists():
+                            return render(request, 'viewClass.html', {'classDetail' : classDetail, 'error' : 'Class name already exists in the system'})      
+                        else:
+                            updateClass = Classes.objects.get(pk=request.POST.get('classes_id'))
+                            updateClass.className = request.POST.get('name').strip()
+                            updateClass.save()
+                            return redirect('/user/classList') 
+                    else:
+                        return render(request, 'viewClass.html', {'classDetail' : classDetail})
+                else:
+                    return render(request, 'viewClass.html', {'classDetail' : classDetail})
+            else:
+                return redirect('/user/classList')  
         else:
-            return redirect('/user/classList')
+            return redirect('/user/classList')   
     except ValueError:
-        raise Http404
+        return redirect('/user/classList')
+    except:
+        return redirect('/user/classList')  
+
 
 @sessionCheck
-def updateClass(request):
+# @csrf_exempt
+def deleteClass(request):
     try:
-        if(request.method == 'POST'):
-            print(request.POST)
+        if request.method == 'POST':
+            if request.POST.get('csrfmiddlewaretoken') is not None:
+                class_id = request.POST.get('class_id')
+                if class_id is None:
+                    data = {
+                        'error' : 'Class Id is required.'
+                    }
+                    return JsonResponse(data)
+                else:
+                    try:
+                        class_exists = Classes.objects.get(pk=class_id)
+                        class_exists.isDelete = '1'
+                        class_exists.save()
+                        data = {
+                            'success' : 'successfully done.'
+                        }
+                        return JsonResponse(data)
+                    except ObjectDoesNotExist:
+                        data = {
+                            'error' : 'Invalid class id.'
+                        }
+                        return JsonResponse(data)
+            else:
+                data = {
+                    'error' : 'Invalid Action.'
+                }
+                return JsonResponse(data)
         else:
-            return redirect('/user/classList')
+            data = {
+                'error' : 'Invalid Method.'
+            }
+            return JsonResponse(data)
     except:
-        return redirect('/user/classList')
+        data = {
+            'error' : 'Unexcepted error ocurred.'
+        }
+        return JsonResponse(data)
+
+
+
+
+

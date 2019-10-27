@@ -30,4 +30,8 @@ class ClassForm(forms.Form):
         name = self.cleaned_data['name'].strip()
         if name is None:
            raise ValidationError('class name is required.') 
+        else:
+            class_name_exists = Classes.objects.filter(className = name).value()
+            if class_name_exists.exists():
+                raise ValidationError('Class name already exists.')
 

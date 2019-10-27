@@ -13,7 +13,7 @@ def myuser_login_required(f):
         # else:
         #     return f(request, *args, **kwargs)
         if 'userId' in request.session.keys():
-            return redirect('http://localhost:8000/user/dashboard/')
+            return redirect('http://localhost:8000/user/dashboard')
         return f(request, *args, **kwargs)
     # wrap.__doc__=f.__doc__
     # wrap.__name__=f.__name__
