@@ -4,7 +4,7 @@ from .forms import *
 from user.models import *
 from django.core.paginator import Paginator
 from django.http import Http404, JsonResponse
-from .forms import  ClassForm
+from .forms import  ClassForm, SectionForm
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
 #csrf_exempt is help to get POST data without csrf_token. It is a decorator @csrf_exempt
@@ -142,12 +142,23 @@ def deleteClass(request):
 @sessionCheck
 def createSection(request):
     # try:
+        class_list = Classes.objects.filter()
+        class_list_count = Classes.objects.filter().count()
         if(request.method == 'POST'):
-            print(request.POST)
+            if request.POST.get('csrfmiddlewaretoken') is not None:
+                sectionForm = SectionForm(request.POST)
+                if sectionForm.is_valid():
+                    Sections.objects.create(code=request.POST.get('code'), name=request.POST.get('name'), classes_id=request.POST.get('id'))
+                    return render(request, 'section/createSection.html', {'classes_list' : class_list, 'class_list_count' : class_list_count, 'success' : 'Section created for given class succesfully done.'})
+                else:
+                    error = sectionForm.errors.get_json_data(escape_html=False).get('code')
+                    for error_message in error:
+                        error_message = error_message
+                    return render(request, 'section/createSection.html', {'classes_list' : class_list, 'class_list_count' : class_list_count, 'error' : error_message.get('message')})    
+            else:
+                return render(request, 'section/createSection.html', {'classes_list' : class_list, 'class_list_count' : class_list_count})   
         else:
-           class_list = Classes.objects.filter()
-           print(class_list)
-        #    return render(request, 'section/createSection.html', {'classes_list' : class_list})
+            return render(request, 'section/createSection.html', {'classes_list' : class_list, 'class_list_count' : class_list_count})
     # except:
     #     raise Http404
 
