@@ -54,7 +54,7 @@ def createClass(request):
 @sessionCheck
 def listClass(request):
     try:
-        classList = Classes.objects.filter(isDelete='0')
+        classList = Classes.objects.filter()
         paginator = Paginator(classList, 2)
         page = request.GET.get('page')
         classDetails = paginator.get_page(page)
@@ -98,7 +98,7 @@ def viewClass(request, class_id):
 @sessionCheck
 # @csrf_exempt
 def deleteClass(request):
-    try:
+    # try:
         if request.method == 'POST':
             if request.POST.get('csrfmiddlewaretoken') is not None:
                 class_id = request.POST.get('class_id')
@@ -110,8 +110,8 @@ def deleteClass(request):
                 else:
                     try:
                         class_exists = Classes.objects.get(pk=class_id)
-                        class_exists.isDelete = '1'
-                        class_exists.save()
+                        # class_exists.isDelete = '1'
+                        class_exists.delete()
                         data = {
                             'success' : 'successfully done.'
                         }
@@ -131,13 +131,24 @@ def deleteClass(request):
                 'error' : 'Invalid Method.'
             }
             return JsonResponse(data)
-    except:
-        data = {
-            'error' : 'Unexcepted error ocurred.'
-        }
-        return JsonResponse(data)
+    # except:
+    #     data = {
+    #         'error' : 'Unexcepted error ocurred.'
+    #     }
+    #     return JsonResponse(data)
 
 
 
+@sessionCheck
+def createSection(request):
+    # try:
+        if(request.method == 'POST'):
+            print(request.POST)
+        else:
+           class_list = Classes.objects.filter()
+           print(class_list)
+        #    return render(request, 'section/createSection.html', {'classes_list' : class_list})
+    # except:
+    #     raise Http404
 
 

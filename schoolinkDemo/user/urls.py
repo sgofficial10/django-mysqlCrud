@@ -4,10 +4,19 @@ from . import views
 
 
 urlpatterns = [
-    path('deleteClass', views.deleteClass),
+
+    # dashboard URL
     path('logout', views.logout),
-    path('viewClass/<int:class_id>', views.viewClass),
     path('dashboard', views.dashboard),
+
+    # Class URL
+    path('deleteClass', views.deleteClass),
+    path('viewClass/<int:class_id>', views.viewClass),  
     path('createClass', views.createClass),
-    path('classList', views.listClass)
+    path('classList', views.listClass),
+
+
+    # Section URL
+
+    path('createSection', views.createSection)
 ]
