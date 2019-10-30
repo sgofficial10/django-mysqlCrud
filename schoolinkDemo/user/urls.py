@@ -14,6 +14,7 @@ urlpatterns = [
     path('viewClass/<int:class_id>', views.viewClass),  
     path('createClass', views.createClass),
     path('classList', views.listClass),
+    path('listSection', views.listSection),
 
 
     # Section URL

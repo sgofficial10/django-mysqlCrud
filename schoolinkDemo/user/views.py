@@ -54,7 +54,7 @@ def createClass(request):
 @sessionCheck
 def listClass(request):
     try:
-        classList = Classes.objects.filter()
+        classList = Classes.objects.get_query()
         paginator = Paginator(classList, 2)
         page = request.GET.get('page')
         classDetails = paginator.get_page(page)
@@ -98,7 +98,7 @@ def viewClass(request, class_id):
 @sessionCheck
 # @csrf_exempt
 def deleteClass(request):
-    # try:
+    try:
         if request.method == 'POST':
             if request.POST.get('csrfmiddlewaretoken') is not None:
                 class_id = request.POST.get('class_id')
@@ -131,19 +131,19 @@ def deleteClass(request):
                 'error' : 'Invalid Method.'
             }
             return JsonResponse(data)
-    # except:
-    #     data = {
-    #         'error' : 'Unexcepted error ocurred.'
-    #     }
-    #     return JsonResponse(data)
+    except:
+        data = {
+            'error' : 'Unexcepted error ocurred.'
+        }
+        return JsonResponse(data)
 
 
 
 @sessionCheck
 def createSection(request):
-    # try:
-        class_list = Classes.objects.filter()
-        class_list_count = Classes.objects.filter().count()
+    try:
+        class_list = Classes.objects.get_query()
+        class_list_count = Classes.objects.get_query().count()
         if(request.method == 'POST'):
             if request.POST.get('csrfmiddlewaretoken') is not None:
                 sectionForm = SectionForm(request.POST)
@@ -159,7 +159,40 @@ def createSection(request):
                 return render(request, 'section/createSection.html', {'classes_list' : class_list, 'class_list_count' : class_list_count})   
         else:
             return render(request, 'section/createSection.html', {'classes_list' : class_list, 'class_list_count' : class_list_count})
-    # except:
-    #     raise Http404
+    except:
+        raise Http404
+
+
+@sessionCheck
+def listSection(request):
+    if request.method == 'POST':
+        if request.POST.get('csrfmiddlewaretoken') is not None:
+            class_id = request.POST.get('class_id', None)
+            if class_id is None:
+                data = {
+                    'error' : 'Class Id is required.'
+                }
+                return JsonResponse(data)
+            else:
+                section_list = Sections.objects.filter(classes_id=class_id).values()
+                if section_list.exists():
+                    for sections_list in section_list:
+                        sections_list = sections_list
+                    data = { 'section_list' : sections_list}
+                    return JsonResponse(data)
+                else:
+                    data = { 'section_list' : ''} 
+                    return JsonResponse(data) 
+        else:
+            data = {
+                'error' : 'Invalid Method.'
+            }
+            return JsonResponse(data) 
+    else:
+        data = {
+                'error' : 'Invalid Method.'
+            }
+        return JsonResponse(data)
+
 
 

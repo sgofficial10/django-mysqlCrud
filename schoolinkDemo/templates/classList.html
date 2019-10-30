@@ -5,6 +5,8 @@
 {% block javascript %}
 
 <script>
+    
+    
     $(document.body).on('click', '.del_btn', function(){
         let selector_id = $(this).attr('data-classes_id');
 
@@ -45,8 +47,23 @@
                     }
                 });
             }
+        }); 
+    });
+
+
+    $(document.body).on('click', '.showSections', function(){
+        $('#exampleModal').modal('show');
+        let class_id = $(this).attr('data-classes_id');
+        $.ajax({
+            url : '/user/listSection',
+            type : 'POST',
+            data : {class_id : class_id, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+            dataType: 'json',
+            success : function(data){
+                console.log(data)
+            }
         });
-        
+
     });
 
 </script>
@@ -95,10 +112,10 @@
                                                     <td>{{ class.code|default:"N/A" }}</td>
                                                     <td>{{ class.className|default:"N/A" }}</td>
                                                     <td>
-                                                        <a href="javascript:void(0);" class="md-trigger btn btn-primary child-btn showSections" data-classes_id="<?php echo $value['classId'];?>"> Sections</a>
+                                                        <a href="javascript:void(0);" class="md-trigger btn btn-primary child-btn showSections" data-classes_id="{{ class.id }}"> Sections</a>
                                                     </td>
                                                     <td style="width: 20%;">
-                                                        <a href="http://localhost:8000/user/viewClass/{{ class.id }}" class="table-link">
+                                                        <a href="{{ 'user/viewClass/' }}{{ class.id }}" class="table-link">
                                                                 <span class="fa-stack">
                                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
@@ -142,6 +159,43 @@
     </div>
 </div>
 
+
+
+
+
+
+
+
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Section List</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        <table class="table">
+                         <thead>
+                            <tr>
+                              <th>Code</th>
+                              <th>Section Name</th>
+                            </tr>
+                      </thead>
+                      <tbody id="sectionList">
+  
+                          </tbody>
+                    </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
 
 
