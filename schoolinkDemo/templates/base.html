@@ -230,19 +230,19 @@ padding: 0;
                                         <span>Dashboard</span>
                                     </a>
                                 </li>
-                                <li class=''>
+                                <li class='{% if request.resolver_match.url_name == "create_class" or request.resolver_match.url_name == "list_class" %} active {% endif %}'>
                                     <a href="#" class="dropdown-toggle">
                                         <i class="fa fa-sticky-note"></i>
                                             <span>Classes</span>
                                         <i class="fa fa-chevron-circle-right drop-icon"></i>
                                     </a>
-                                    <ul class="submenu" >
-                                        <li class=''>
+                                    <ul class="submenu" {% if request.resolver_match.url_name == "create_class" or request.resolver_match.url_name == "list_class" %} style="display:block;" {% endif %}>
+                                        <li class='{% if request.resolver_match.url_name == "create_class" %} active {% endif %}'>
                                             <a href="http://localhost:8000/user/createClass">
                                                 <i class="fa fa-pencil-square-o"> </i> Create Classes
                                             </a>
                                         </li>
-                                        <li class=''>
+                                        <li class='{% if request.resolver_match.url_name == "list_class" %} active {% endif %}'>
                                             <a href="http://localhost:8000/user/classList">
                                                 <i class="fa fa-eye fa-lg"></i> View Classes
                                             </a>
@@ -261,11 +261,11 @@ padding: 0;
                                                 <i class="fa fa-pencil-square-o"> </i> Create Section
                                             </a>
                                         </li>
-                                        <!-- <li class=''>
-                                            <a href="http://localhost:8000/user/classList">
-                                                <i class="fa fa-eye fa-lg"></i> View Classes
+                                        <li class=''>
+                                            <a href="{{ '/user/listSection' }}">
+                                                <i class="fa fa-eye fa-lg"></i> List Sections
                                             </a>
-                                        </li> -->
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>

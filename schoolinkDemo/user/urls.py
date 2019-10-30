@@ -10,14 +10,15 @@ urlpatterns = [
     path('dashboard', views.dashboard),
 
     # Class URL
-    path('deleteClass', views.deleteClass),
+    path('deleteClass', views.deleteClass,),
     path('viewClass/<int:class_id>', views.viewClass),  
-    path('createClass', views.createClass),
-    path('classList', views.listClass),
+    path('createClass', views.createClass, name="create_class"),
+    path('classList', views.listClass, name="list_class"),
     path('listSection', views.listSection),
 
 
     # Section URL
 
-    path('createSection', views.createSection)
+    path('createSection', views.createSection),
+    path('listSection', views.listSection),
 ]

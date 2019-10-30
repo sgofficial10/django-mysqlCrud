@@ -165,34 +165,45 @@ def createSection(request):
 
 @sessionCheck
 def listSection(request):
-    if request.method == 'POST':
-        if request.POST.get('csrfmiddlewaretoken') is not None:
-            class_id = request.POST.get('class_id', None)
-            if class_id is None:
-                data = {
-                    'error' : 'Class Id is required.'
-                }
-                return JsonResponse(data)
-            else:
-                section_list = Sections.objects.filter(classes_id=class_id).values()
-                if section_list.exists():
-                    for sections_list in section_list:
-                        sections_list = sections_list
-                    data = { 'section_list' : sections_list}
+    try:
+        if request.method == 'POST':
+            if request.POST.get('csrfmiddlewaretoken') is not None:
+                class_id = request.POST.get('class_id', None)
+                if class_id is None:
+                    data = {
+                        'error' : 'Class Id is required.'
+                    }
                     return JsonResponse(data)
                 else:
-                    data = { 'section_list' : ''} 
-                    return JsonResponse(data) 
+                    section_list = Sections.objects.filter(classes_id=class_id).values()
+                    if section_list.exists():
+                        data = { 'section_list' : list(section_list)}
+                        return JsonResponse(data)
+                    else:
+                        data = { 'section_list' : ''} 
+                        return JsonResponse(data) 
+            else:
+                data = {
+                    'error' : 'Invalid Method.'
+                }
+                return JsonResponse(data) 
         else:
             data = {
-                'error' : 'Invalid Method.'
-            }
-            return JsonResponse(data) 
-    else:
+                    'error' : 'Invalid Method.'
+                }
+        return JsonResponse(data)
+    except:
         data = {
                 'error' : 'Invalid Method.'
             }
         return JsonResponse(data)
+
+
+
+
+@sessionCheck
+def listSection(request):
+    return render(request, 'test1.html', {'hashedPassword' : 'sffsfs'})
 
 
 
