@@ -55,7 +55,7 @@ def createClass(request):
 def listClass(request):
     try:
         classList = Classes.objects.get_query()
-        paginator = Paginator(classList, 2)
+        paginator = Paginator(classList, 10)
         page = request.GET.get('page')
         classDetails = paginator.get_page(page)
         return render(request, 'classList.html', {'classList': classDetails, 'number' : 1})
@@ -202,8 +202,34 @@ def listSection(request):
 
 
 @sessionCheck
-def listSection(request):
-    return render(request, 'test1.html', {'hashedPassword' : 'sffsfs'})
+def listSections(request):
+    try:
+        sectionList = Sections.objects.get_query()
+        paginator = Paginator(sectionList, 10)
+        page = request.GET.get('page')
+        sectionDetails = paginator.get_page(page)
+        return render(request, 'section/sectionList.html', {'sectionList': sectionDetails, 'number' : 1})
+    except ValueError:
+        raise Http404
 
 
 
+@sessionCheck
+def viewSections(request, section_id):
+    # try:
+        if(section_id is not None):
+            try:
+                get_section = Sections.objects.get(pk=section_id)
+            except ObjectDoesNotExist:
+                raise Http404
+            else:
+                return render(request, 'section/viewSection.html', {'section_details' : get_section})
+            # if get_section.exists():
+            #     for section in  get_section:
+            #         section_details = section
+            # else:
+            #     return redirect('/user/listSections')  
+        else:
+          return redirect('/user/listSections')  
+    # except:
+    #     raise Http404

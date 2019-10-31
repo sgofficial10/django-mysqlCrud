@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<div id="content-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="row">
+				<div class="col-lg-12">
+					<ol class="breadcrumb">
+						<li><a href="{{ 'dashboard' }}">Home</a></li>
+						<li class="active"><span>Manage Sections</span></li>
+					</ol>
+					<div class="clearfix">
+						<h1 class="pull-left">Edit Section</h1>
+						<div class="pull-right top-page-ui">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="main-box">
+								<header class="main-box-header clearfix">
+								</header>
+								<div class="main-box-body clearfix">
+                                    <form  action ="{{ 'viewSection/' }}{{ section.id }}" method ="post" >
+                                        <div class="form-group">
+                                            <input type ="text" name ="SectionCode" disabled = "disabled"  placeholder = "Enter Code" class = "form-control" value ="{{ section_details.code|default:'N/A' }}">
+                                            <span class="help-block"><i class="icon-remove-sign"></i> <font color='red'></font></span> 
+                                        </div>
+                                        <div class="form-group">
+                                            <input type ="text" name ="className" class = "form-control" placeholder = "Enter className" disabled = "disabled"  value="{{ section_details.classes.className|default:'N/A' }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type ="text"  name ="sectionName" placeholder = "Enter Section Name" class = "form-control"  value ="{{ section_details.name|default:'N/A' }}">
+                                            <span class="help-block"><i class="icon-remove-sign"></i> <font color='red'></font></span>
+                                        </div>
+                                            <input type ="submit" name ="UpdateSections" value ="Update Section!" class="btn btn-primary" >
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+{% endblock %}

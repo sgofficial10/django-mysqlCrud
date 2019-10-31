@@ -225,25 +225,25 @@ padding: 0;
                         <div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">
                             <ul class="nav nav-pills nav-stacked">
                                 <li  class=''>
-                                    <a href="">
+                                    <a href="{{ 'dashboard' }}">
                                         <i class="fa fa-dashboard"></i>
                                         <span>Dashboard</span>
                                     </a>
                                 </li>
-                                <li class='{% if request.resolver_match.url_name == "create_class" or request.resolver_match.url_name == "list_class" %} active {% endif %}'>
+                                <li class='{% if request.resolver_match.url_name == "create_class" or request.resolver_match.url_name == "list_class" or request.resolver_match.url_name == "view_class" %} active {% endif %}'>
                                     <a href="#" class="dropdown-toggle">
                                         <i class="fa fa-sticky-note"></i>
                                             <span>Classes</span>
                                         <i class="fa fa-chevron-circle-right drop-icon"></i>
                                     </a>
-                                    <ul class="submenu" {% if request.resolver_match.url_name == "create_class" or request.resolver_match.url_name == "list_class" %} style="display:block;" {% endif %}>
+                                    <ul class="submenu" {% if request.resolver_match.url_name == "create_class" or request.resolver_match.url_name == "list_class" or request.resolver_match.url_name == "list_class" or request.resolver_match.url_name == "view_class" %} style="display:block;" {% endif %}>
                                         <li class='{% if request.resolver_match.url_name == "create_class" %} active {% endif %}'>
-                                            <a href="http://localhost:8000/user/createClass">
+                                            <a href="{{ 'createClass' }}">
                                                 <i class="fa fa-pencil-square-o"> </i> Create Classes
                                             </a>
                                         </li>
-                                        <li class='{% if request.resolver_match.url_name == "list_class" %} active {% endif %}'>
-                                            <a href="http://localhost:8000/user/classList">
+                                        <li class='{% if request.resolver_match.url_name == "list_class" or request.resolver_match.url_name == "list_class" or request.resolver_match.url_name == "view_class" %} active {% endif %}'>
+                                            <a href="{{ 'classList' }}">
                                                 <i class="fa fa-eye fa-lg"></i> View Classes
                                             </a>
                                         </li>
@@ -257,12 +257,12 @@ padding: 0;
                                     </a>
                                     <ul class="submenu" >
                                         <li class=''>
-                                            <a href="{{ '/user/createSection' }}">
+                                            <a href="{{ 'createSection' }}">
                                                 <i class="fa fa-pencil-square-o"> </i> Create Section
                                             </a>
                                         </li>
                                         <li class=''>
-                                            <a href="{{ '/user/listSection' }}">
+                                            <a href="{{ 'listSections' }}">
                                                 <i class="fa fa-eye fa-lg"></i> List Sections
                                             </a>
                                         </li>

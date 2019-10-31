@@ -11,7 +11,7 @@ urlpatterns = [
 
     # Class URL
     path('deleteClass', views.deleteClass,),
-    path('viewClass/<int:class_id>', views.viewClass),  
+    path('viewClass/<int:class_id>', views.viewClass, name="view_class"),  
     path('createClass', views.createClass, name="create_class"),
     path('classList', views.listClass, name="list_class"),
     path('listSection', views.listSection),
@@ -19,6 +19,7 @@ urlpatterns = [
 
     # Section URL
 
-    path('createSection', views.createSection),
-    path('listSection', views.listSection),
+    path('createSection', views.createSection, name="create_section"),
+    path('listSections', views.listSections, name="list_section"),
+    path('viewSection/<int:section_id>', views.viewSections, name="view_section"),
 ]
